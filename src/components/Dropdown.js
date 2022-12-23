@@ -35,6 +35,7 @@ const Dropdown = ({
             <View
                 style={[
                     style.inputContainer,
+                    
                     {
                         borderColor: error
                             ? COLORS.red
