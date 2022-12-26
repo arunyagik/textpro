@@ -2,7 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Dimensions, } from
 import Button from "../Button";
 import { useState } from "react";
 import Input from "../Input";
-import { getStoreData } from "../storage/projectAsyncStorage";
+import { getStoreData,storeData } from "../storage/projectAsyncStorage";
+import { validate } from "../../utilities/validation";
 
 const { width, height } = Dimensions.get("window")
 
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 
 });
 
-export default function Login(props) {
+export default function Login({navigation}) {
 
 
     const [productId, setProductId] = useState('');
@@ -31,7 +32,12 @@ export default function Login(props) {
 
       //console.log("local data 123",data)
       if(data.productid==productId && data.productkey==password)
-      {alert('Login Succes')}
+      {   navigation.navigate('HomeScreen');
+      storeData(
+        'userData',
+        ({...userData, loggedIn: true}),
+      );
+        alert('Login Succes')}
       else{alert('fail to Login')}
 
     }catch(err){
@@ -75,7 +81,7 @@ export default function Login(props) {
                     </View>
 
                     <View style={{ marginTop: 20, width: width * 0.60,paddingLeft:60 }}>
-                        <Button  onPress={()=>handleButton()} size="small" bordered color='#51cbcc' text="Login" type='filled' />
+                        <Button  onPress={()=>{handleButton()}} size="small" bordered color='#51cbcc' text="Login" type='filled' />
 
                     </View>
 

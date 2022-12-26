@@ -1,24 +1,27 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import Registration from './src/components/login/Registration';
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Registration from './src/components/screens/Registration';
+import Login from './src/components/screens/Login'
+import HomeScreen from './src/components/screens/HomeScreen';
   
-  
+const Stack=createNativeStackNavigator()
 
     export default function App(props) {
      
      
      
       return (
-       <Registration/>
+        <NavigationContainer>
+        <Stack.Navigator
+        screenOptions={{headerShown:false}}    >
+        <Stack.Screen  name="Registration" component={Registration}/>     
+        <Stack.Screen  name="LoginScreen" component={Login}/>     
+           <Stack.Screen name="HomeScreen" component={HomeScreen}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    
       );
     }
