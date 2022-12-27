@@ -1,6 +1,6 @@
 import { Keyboard } from "react-native";
 import { storeData } from "../components/storage/projectAsyncStorage";
-   export function validate(checkedfacebook,checkedWhatspp,checkdinstagram,handleError,inputs,valuetype,status,setTypeError,setStatusError,checked) {
+   export function validate(checkedfacebook,checkedWhatspp,checkdinstagram,handleError,inputs,valuetype,status,setTypeError,setStatusError,checked,navigation) {
     Keyboard.dismiss();
     let isValid = true;
 
@@ -50,7 +50,7 @@ if(!status){
     if (isValid) {
       //alert(JSON.stringify(inputs))
         storeData('userData',inputs)     
-      alert('success');
+        navigation.navigate('LoginScreen')
       console.log('arun',inputs)
     }
 }

@@ -14,7 +14,7 @@ import Radio from '../Radiobutton';
 import Check from '../CheckBox';
 
 
-const Registration =(props)=>{
+const Registration =({navigation})=>{
 
     const [inputs, setInputs] = React.useState({
         productid: '',
@@ -174,7 +174,7 @@ setCheckedinstagram={setCheckedinstagram}
 
 />
 
-      <Button  text='Submit' onPress={()=>validate(checkedfacebook,checkedWhatspp,checkdinstagram,handleError,inputs,valuetype,status,setTypeError,setStatusError,checked)} />
+      <Button  text='Submit' onPress={()=>validate(checkedfacebook,checkedWhatspp,checkdinstagram,handleError,inputs,valuetype,status,setTypeError,setStatusError,checked,navigation)} />
 
       </View>
     </View>
