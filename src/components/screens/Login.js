@@ -1,9 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Dimensions, } from "react-native";
 import Button from "../Button";
-import { useState } from "react";
+import React from "react";
 import Input from "../Input";
 import { getStoreData,storeData } from "../storage/projectAsyncStorage";
 import { validate } from "../../utilities/validation";
+
 
 const { width, height } = Dimensions.get("window")
 
@@ -22,29 +23,46 @@ const styles = StyleSheet.create({
 export default function Login({navigation}) {
 
 
-    const [productId, setProductId] = useState('');
-    const [password, setPassword] = useState('');
+const [inputs,setInputs]=React.useState({productid:'',password:''})
+const [errors, setErrors] = React.useState({});
+ 
+/* const [errors,setErrors]=useState({}) */
+
+//alert('inputsssss',inputs)
+
+const validate=async()=>{
+        handleButton();
+      }
 
 
        const handleButton=async()=>{
-    try{
-      const data = await getStoreData('userData');
+   
+        let userData = await getStoreData('userData')
+        if (userData) {
+            if (
+                inputs.productid == userData.productid &&
+                inputs.productkey == userData.productkey
+            ) {
+                navigation.navigate('HomeScreen', { userData });
+                storeData(
+                    'userData',
+                    { ...userData, loggedIn: true },
+                );
+            } else {
+                alert('Error', 'Invalid Details');
+            }
+        } else {
+            alert('Hemu', 'User does not exist');
+        }
 
-      //console.log("local data 123",data)
-      if(data.productid==productId && data.productkey==password)
-      {   navigation.navigate('HomeScreen');
-      storeData(
-        'userData',
-        ({...userData, loggedIn: true}),
-      );
-        alert('Login Succes')}
-      else{alert('fail to Login')}
+         }
 
-    }catch(err){
-      console.log("catch error :",err)
-    }
-  } 
-
+   const handleOnchange=(text,inputs)=>{
+    setInputs(prevState=>({...prevState,[inputs]:text}))
+   }
+   const handleError=(text,error)=>{
+    setErrors(prevState=>({...prevState,[error]:text}))
+   }
     return (
         <View style={styles.container}>
             <StatusBar translucent backgroundColor="transparent" />
@@ -63,31 +81,32 @@ export default function Login({navigation}) {
 
                     <View style={{ marginTop: 20,width:width*0.78 ,paddingLeft:5}}>
                         <Input
-                            onChangeText={(txt) => setProductId(txt)}
+                            onChangeText={text=>handleOnchange(text,'productid')}
                             iconName="dots-grid"
                             label="Product Id"
                             placeholder="Enter your Product Id"
-
+/* error={errors.productid} */
                         />
                     </View>
                     <View style={{ marginTop: 20 ,width:width*0.78 ,paddingLeft:5}}>
                         <Input
                              iconName="lock-outline"
-                            onChangeText={(txt) => setPassword(txt)}
+                            onChangeText={text=>handleOnchange(text,'productkey')}
                             placeholder='Enter your Product Key'
                             label="Product Key"
                             password
+                           /*  error={errors.productkey} */
                         />
                     </View>
 
                     <View style={{ marginTop: 20, width: width * 0.60,paddingLeft:60 }}>
-                        <Button  onPress={()=>{handleButton()}} size="small" bordered color='#51cbcc' text="Login" type='filled' />
+                        <Button  onPress={validate} size="small" bordered color='#51cbcc' text="Login" type='filled' />
 
                     </View>
 
                     <View style={{ marginTop: 25, width: width * 0.8, alignSelf: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <TouchableOpacity>
-                            <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#51cbcc', marginLeft: 40 }}>
+                            <Text onPress={()=>navigation.navigate('Registration')} style={{ fontSize: 16, fontWeight: 'bold', color: '#51cbcc', marginLeft: 40 }}>
                                 Sinup
                             </Text>
                         </TouchableOpacity>
